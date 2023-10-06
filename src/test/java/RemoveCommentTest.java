@@ -60,7 +60,6 @@ public class RemoveCommentTest {
         response.prettyPrint();
         int statusCode = response.getStatusCode();
         Assert.assertEquals(statusCode, 403);
-
     }
     @Test
     public void negativeRemoveCommentWithoutAuthorizationTest(){
