@@ -12,4 +12,9 @@ public class DataUsed {
     public final File ICON_USER = new File("src/test/resources/icon-user.png");
     public final File ICON_NEWS = new File("src/test/resources/icon-news.png");
     public final File NO_VALID_FILE = new File("src/test/resources/invalid-file.txt");
+    public final String PATCH_TITLE = "Patch title News";
+    public final String PATCH_TEXT = "Some patch text...";
+    public final File PATCH_ICON_NEWS = new File("src/test/resources/patch-icon-news.png");
+    public final String COMMENT = "Some comment...";
+    public final String PATCH_COMMENT = "Some patch comment...";
 }

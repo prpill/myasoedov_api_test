@@ -13,25 +13,12 @@ public class CreateNewsTest {
     String path = EndPoints.POST_ACTION;
     @Test
     public void successCreateNewsTest(){
-        String email = Email.generate();
-        String password = data.PASSWORD;
-        Response regResponse = method.createAccount(email, password);
+        Response regResponse = method.createAccount(Email.generate(), data.PASSWORD);
         String accessToken = regResponse
                 .body().jsonPath().getString("accessToken");
         UserData regUser = regResponse
                 .body().jsonPath().getObject("user", UserData.class);
-
-        Response response = given()
-                .auth().oauth2(accessToken)
-                .multiPart("title", data.TITLE)
-                .multiPart("text", data.TEXT)
-                .multiPart("file", data.ICON_NEWS, "image/png")
-                .multiPart("tags[]", data.TAGS)
-                .contentType(ContentType.MULTIPART)
-                .when()
-                .post(path)
-                .then()
-                .extract().response();
+        Response response = method.createPost(accessToken);
         response.prettyPrint();
         int statusCode = response.getStatusCode();
         PostData post = response.jsonPath().getObject("", PostData.class);
@@ -44,14 +31,64 @@ public class CreateNewsTest {
     }
     @Test
     public void negativeCreateNewsWithEmptyFieldsTest(){
-
+        String email = Email.generate();
+        String password = data.PASSWORD;
+        String emptyTitle = "";
+        String emptyText = "";
+        Response regResponse = method.createAccount(email, password);
+        String accessToken = regResponse
+                .body().jsonPath().getString("accessToken");
+        Response response = given()
+                .auth().oauth2(accessToken)
+                .multiPart("title", emptyTitle)
+                .multiPart("text", emptyText)
+                .multiPart("file", data.ICON_NEWS, "image/png")
+                .multiPart("tags[]", data.TAGS)
+                .contentType(ContentType.MULTIPART)
+                .when()
+                .post(path)
+                .then()
+                .extract().response();
+        response.prettyPrint();
+        int statusCode = response.getStatusCode();
+        Assert.assertEquals(statusCode, 400);
     }
     @Test
     public void negativeCreateNewsWithInvalidFileTest(){
-
+        String email = Email.generate();
+        String password = data.PASSWORD;
+        Response regResponse = method.createAccount(email, password);
+        String accessToken = regResponse
+                .body().jsonPath().getString("accessToken");
+        Response response = given()
+                .auth().oauth2(accessToken)
+                .multiPart("title", data.TITLE)
+                .multiPart("text", data.TEXT)
+                .multiPart("file", data.NO_VALID_FILE, "text/plain")
+                .multiPart("tags[]", data.TAGS)
+                .contentType(ContentType.MULTIPART)
+                .when()
+                .post(path)
+                .then()
+                .extract().response();
+        response.prettyPrint();
+        int statusCode = response.getStatusCode();
+        Assert.assertEquals(statusCode, 400);
     }
     @Test
-    public void negativeCreateNewsWithoutAuthorizationTest(){
-
+    public void negativeCreateNewsWithoutAuthorizationTest() {
+        Response response = given()
+                .multiPart("title", data.TITLE)
+                .multiPart("text", data.TEXT)
+                .multiPart("file", data.ICON_NEWS, "image/png")
+                .multiPart("tags[]", data.TAGS)
+                .contentType(ContentType.MULTIPART)
+                .when()
+                .post(path)
+                .then()
+                .extract().response();
+        response.prettyPrint();
+        int statusCode = response.getStatusCode();
+        Assert.assertEquals(statusCode, 401);
     }
 }

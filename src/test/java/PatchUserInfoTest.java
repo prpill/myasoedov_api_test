@@ -12,11 +12,8 @@ public class PatchUserInfoTest {
     String path = EndPoints.USER_ACTION;
     @Test
     public void successPatchUserInfoTest(){
-        String email = Email.generate();
-        String password = data.PASSWORD;
         String patchEmail = Email.generate();
-        Response regResponse = method.createAccount(email, password);
-
+        Response regResponse = method.createAccount(Email.generate(), data.PASSWORD);
         String accessToken = regResponse
                 .body().jsonPath().getString("accessToken");
         UserData regUser = regResponse
