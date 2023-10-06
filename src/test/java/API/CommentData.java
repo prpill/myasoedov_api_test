@@ -1,13 +1,16 @@
 package API;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@AllArgsConstructor
+@NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CommentData {
-    public Integer id;
-    public String text;
-    public Integer authorId;
-    public Integer postId;
+    private Integer id;
+    private String text;
+    private Integer authorId;
+    private Integer postId;
 }
