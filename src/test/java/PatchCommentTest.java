@@ -1,17 +1,19 @@
 import API.CommentData;
-import DTO.CreateCommentDto;
 import DTO.PatchCommentDto;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.given;
-
 public class PatchCommentTest {
     Methods method = new Methods();
     DataUsed data = new DataUsed();
     String path = EndPoints.COMMENT_ACTION;
+    @Epic(value = "Working with comments")
+    @Feature("Successful comment edit")
     @Test
     public void successPatchCommentTest(){
         String accessToken = method.createAccount(Email.generate(), data.PASSWORD)
@@ -37,6 +39,8 @@ public class PatchCommentTest {
         Assert.assertEquals(patchComment.getPostId(), comment.getPostId());
         Assert.assertEquals(patchComment.getText(), data.PATCH_COMMENT);
     }
+    @Epic(value = "Working with comments")
+    @Feature("Negative test - changing the comment to empty")
     @Test
     public void negativePatchCommentWithEmptyTextTest(){
         String accessToken = method.createAccount(Email.generate(), data.PASSWORD)
@@ -58,6 +62,8 @@ public class PatchCommentTest {
         int statusCode = response.getStatusCode();
         Assert.assertEquals(statusCode, 400);
     }
+    @Epic(value = "Working with comments")
+    @Feature("Negative test - editing a comment with a non-existent post id")
     @Test
     public void negativePatchCommentWithInvalidCommentIdTest(){
         String accessToken = method.createAccount(Email.generate(), data.PASSWORD)
@@ -76,6 +82,8 @@ public class PatchCommentTest {
         int statusCode = response.getStatusCode();
         Assert.assertEquals(statusCode, 404);
     }
+    @Epic(value = "Working with comments")
+    @Feature("Negative test - editing a comment under another user")
     @Test
     public void negativePatchCommentWithoutAccessTest(){
         String creatorToken = method.createAccount(Email.generate(), data.PASSWORD)
@@ -99,6 +107,8 @@ public class PatchCommentTest {
         int statusCode = response.getStatusCode();
         Assert.assertEquals(statusCode, 403);
     }
+    @Epic(value = "Working with comments")
+    @Feature("Negative test - editing a comment without authorization")
     @Test
     public void negativePatchCommentWithoutAuthorizationTest(){
         String accessToken = method.createAccount(Email.generate(), data.PASSWORD)

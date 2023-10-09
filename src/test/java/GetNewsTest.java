@@ -1,22 +1,20 @@
 import API.PostData;
-import API.UserData;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import static io.restassured.RestAssured.given;
-
 public class GetNewsTest {
     Methods method = new Methods();
     DataUsed data = new DataUsed();
-    String path = EndPoints.POST_ACTION;
+    @Epic(value = "Working with posts")
+    @Feature(value = "Successfully obtaining a post")
     @Test
     public void successGetNewsTest(){
         Response regResponse = method.createAccount(Email.generate(), data.PASSWORD);
         String accessToken = regResponse
                 .body().jsonPath().getString("accessToken");
         PostData post = method.createPost(accessToken).jsonPath().getObject("", PostData.class);
-
         Response response = method.searchPost(post.getId());
         response.prettyPrint();
 
@@ -29,6 +27,8 @@ public class GetNewsTest {
         Assert.assertEquals(foundPost.getCoverPath(), post.getCoverPath());
         Assert.assertEquals(foundPost.getAuthorId(), post.getAuthorId());
     }
+    @Epic(value = "Working with posts")
+    @Feature(value = "Negative test - receiving a post with a non-existent post id")
     @Test
     public void negativeGetNewsWithInvalidPostId(){
         int invalidPostId = -1;

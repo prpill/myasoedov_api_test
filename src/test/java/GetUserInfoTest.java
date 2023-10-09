@@ -1,17 +1,18 @@
 import API.UserData;
-import DTO.AuthenticationDto;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
 public class GetUserInfoTest {
     Methods method = new Methods();
     DataUsed data = new DataUsed();
     RequestSpecification request = RestAssured.given();
     String path = EndPoints.USER_ACTION;
+    @Epic(value = "Working with a User Entity")
+    @Feature(value = "Successful retrieval of user data")
     @Test
     public void successGetUserInfoTest(){
         String email = Email.generate();
@@ -32,6 +33,8 @@ public class GetUserInfoTest {
         Assert.assertEquals(user.getId(), regUser.getId());
         Assert.assertEquals(user.getEmail(), regUser.getEmail());
     }
+    @Epic(value = "Working with a User Entity")
+    @Feature(value = "Negative test - receiving user data with a non-existent post id")
     @Test
     public void negativeGetUserInfoWithInvalidUserIdTest(){
         int invalidUserId = -1;

@@ -1,16 +1,20 @@
 import API.PostData;
 import API.UserData;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
 import static io.restassured.RestAssured.given;
+
 
 public class CreateNewsTest {
     Methods method = new Methods();
     DataUsed data = new DataUsed();
     String path = EndPoints.POST_ACTION;
+    @Epic(value = "Working with posts")
+    @Feature(value = "Successful post creation")
     @Test
     public void successCreateNewsTest(){
         Response regResponse = method.createAccount(Email.generate(), data.PASSWORD);
@@ -29,6 +33,8 @@ public class CreateNewsTest {
         Assert.assertEquals(post.getAuthorId(), regUser.getId());
         Assert.assertNotNull(post.getCoverPath());
     }
+    @Epic(value = "Working with posts")
+    @Feature(value = "Negative test - creating a post with empty title and text fields")
     @Test
     public void negativeCreateNewsWithEmptyFieldsTest(){
         String email = Email.generate();
@@ -53,6 +59,8 @@ public class CreateNewsTest {
         int statusCode = response.getStatusCode();
         Assert.assertEquals(statusCode, 400);
     }
+    @Epic(value = "Working with posts")
+    @Feature(value = "Negative test - creating a post with the wrong file format")
     @Test
     public void negativeCreateNewsWithInvalidFileTest(){
         String email = Email.generate();
@@ -75,6 +83,8 @@ public class CreateNewsTest {
         int statusCode = response.getStatusCode();
         Assert.assertEquals(statusCode, 400);
     }
+    @Epic(value = "Working with posts")
+    @Feature(value = "Negative test - creating a post without authorization")
     @Test
     public void negativeCreateNewsWithoutAuthorizationTest() {
         Response response = given()

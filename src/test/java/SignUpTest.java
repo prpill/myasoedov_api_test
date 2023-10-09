@@ -1,12 +1,14 @@
 import API.UserData;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
-
 public class SignUpTest {
     Methods method = new Methods();
     DataUsed data = new DataUsed();
+    @Epic(value = "Working with a User Entity")
+    @Feature(value = "Successful user creation")
     @Test
     public void successSignUpTest(){
         String email = Email.generate();
@@ -23,6 +25,8 @@ public class SignUpTest {
         Assert.assertEquals(user.getEmail(), email);
         Assert.assertEquals(statusCode, 201);
     }
+    @Epic(value = "Working with a User Entity")
+    @Feature(value = "Negative test - creating a user with an invalid email")
     @Test
     public void negativeSignUpWithInvalidEmailTest(){
         String invalidEmail = data.NO_VALID_EMAIL;
@@ -33,6 +37,8 @@ public class SignUpTest {
         int statusCode = response.getStatusCode();
         Assert.assertEquals(statusCode, 400);
     }
+    @Epic(value = "Working with a User Entity")
+    @Feature(value = "Negative test - creating a user with an empty email field")
     @Test
     public void negativeSignUpWithEmptyEmailTest(){
         String emptyEmail = "";
@@ -43,6 +49,8 @@ public class SignUpTest {
         int statusCode = response.getStatusCode();
         Assert.assertEquals(statusCode, 400);
     }
+    @Epic(value = "Working with a User Entity")
+    @Feature(value = "Negative test - creating a user with an empty password field")
     @Test
     public void negativeSignUpWithEmptyPasswordTest(){
         String email = Email.generate();

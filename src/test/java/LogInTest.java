@@ -1,17 +1,20 @@
 import API.UserData;
 import DTO.AuthenticationDto;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
 public class LogInTest {
     Methods method = new Methods();
     DataUsed data = new DataUsed();
     RequestSpecification request = RestAssured.given();
     String path = EndPoints.LOG_IN;
+    @Epic(value = "Working with a User Entity")
+    @Feature(value = "Successful authorization")
     @Test
     public void successLogInTest(){
         String email = Email.generate();
@@ -38,6 +41,8 @@ public class LogInTest {
         Assert.assertEquals(user.getEmail(), regUser.getEmail());
         Assert.assertNotNull(accessToken);
     }
+    @Epic(value = "Working with a User Entity")
+    @Feature(value = "Negative test - authorization with invalid email")
     @Test
     public void negativeLogInWithInvalidEmailTest(){
         String email = Email.generate();
@@ -58,6 +63,8 @@ public class LogInTest {
         int statusCode = response.getStatusCode();
         Assert.assertEquals(statusCode, 401);
     }
+    @Epic(value = "Working with a User Entity")
+    @Feature(value = "Negative test - authorization with empty email field")
     @Test
     public void negativeLogInWithEmptyEmailTest(){
         String email = Email.generate();
@@ -78,6 +85,8 @@ public class LogInTest {
         int statusCode = response.getStatusCode();
         Assert.assertEquals(statusCode, 401);
     }
+    @Epic(value = "Working with a User Entity")
+    @Feature(value = "Negative test - authorization with an empty password field")
     @Test
     public void negativeLogInWithEmptyPasswordTest(){
         String email = Email.generate();
@@ -98,7 +107,8 @@ public class LogInTest {
         int statusCode = response.getStatusCode();
         Assert.assertEquals(statusCode, 401);
     }
-
+    @Epic(value = "Working with a User Entity")
+    @Feature(value = "Negative test - authorization without registration")
     @Test
     public void negativeLogInWithWithoutAuthorizationTest(){
         String email = Email.generate();

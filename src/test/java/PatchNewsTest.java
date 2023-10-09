@@ -1,15 +1,17 @@
 import API.PostData;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
 import static io.restassured.RestAssured.given;
-
 public class PatchNewsTest {
     Methods method = new Methods();
     DataUsed data = new DataUsed();
     String path = EndPoints.POST_ACTION;
+    @Epic(value = "Working with posts")
+    @Feature(value = "Successful post editing")
     @Test
     public void successPatchNewsTest(){
         Response regResponse = method.createAccount(Email.generate(), data.PASSWORD);
@@ -36,6 +38,8 @@ public class PatchNewsTest {
         Assert.assertNotNull(patchPost.getCoverPath());
         Assert.assertEquals(patchPost.getAuthorId(), post.getAuthorId());
     }
+    @Epic(value = "Working with posts")
+    @Feature(value = "Negative test - editing a post with empty title and text fields")
     @Test
     public void negativePatchNewsWithEmptyFieldsTest(){
         Response regResponse = method.createAccount(Email.generate(), data.PASSWORD);
@@ -58,6 +62,8 @@ public class PatchNewsTest {
         int statusCode = response.getStatusCode();
         Assert.assertEquals(statusCode, 400);
     }
+    @Epic(value = "Working with posts")
+    @Feature(value = "Negative test - editing a post with the wrong file format")
     @Test
     public void negativePatchNewsWithInvalidFileTest(){
         Response regResponse = method.createAccount(Email.generate(), data.PASSWORD);
@@ -78,6 +84,8 @@ public class PatchNewsTest {
         int statusCode = response.getStatusCode();
         Assert.assertEquals(statusCode, 400);
     }
+    @Epic(value = "Working with posts")
+    @Feature(value = "Negative test - editing a post with a non-existent post id")
     @Test
     public void negativePatchNewsWithInvalidPostIdTest(){
         Response regResponse = method.createAccount(Email.generate(), data.PASSWORD);
@@ -98,6 +106,8 @@ public class PatchNewsTest {
         int statusCode = response.getStatusCode();
         Assert.assertEquals(statusCode, 404);
     }
+    @Epic(value = "Working with posts")
+    @Feature(value = "Negative test - editing a post under another user")
     @Test
     public void negativePatchNewsWithoutAccessTest(){
         Response regResponse = method.createAccount(Email.generate(), data.PASSWORD);
@@ -123,6 +133,8 @@ public class PatchNewsTest {
         int statusCode = response.getStatusCode();
         Assert.assertEquals(statusCode, 403);
     }
+    @Epic(value = "Working with posts")
+    @Feature(value = "Negative test - receiving a post without authorization")
     @Test
     public void negativePatchNewsWithoutAuthorizationTest(){
         Response regResponse = method.createAccount(Email.generate(), data.PASSWORD);

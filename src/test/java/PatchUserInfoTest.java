@@ -1,15 +1,18 @@
 import API.UserData;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.given;
-
 public class PatchUserInfoTest {
     Methods method = new Methods();
     DataUsed data = new DataUsed();
     String path = EndPoints.USER_ACTION;
+    @Epic(value = "Working with a User Entity")
+    @Feature(value = "Successful modification of user data")
     @Test
     public void successPatchUserInfoTest(){
         String patchEmail = Email.generate();
@@ -41,6 +44,8 @@ public class PatchUserInfoTest {
         Assert.assertEquals(user.getFirstName(), data.FIRST_NAME);
         Assert.assertEquals(user.getLastName(), data.LAST_NAME);
     }
+    @Epic(value = "Working with a User Entity")
+    @Feature(value = "Negative test - changing user data with invalid email")
     @Test
     public void negativePatchUserInfoWithInvalidEmailTest(){
         String email = Email.generate();
@@ -69,6 +74,8 @@ public class PatchUserInfoTest {
         int statusCode = response.getStatusCode();
         Assert.assertEquals(statusCode, 400);
     }
+    @Epic(value = "Working with a User Entity")
+    @Feature(value = "Negative test - changing user data with incorrect file format")
     @Test
     public void negativePatchUserInfoWithInvalidFileTest(){
         String email = Email.generate();
@@ -97,6 +104,8 @@ public class PatchUserInfoTest {
         int statusCode = response.getStatusCode();
         Assert.assertEquals(statusCode, 400);
     }
+    @Epic(value = "Working with a User Entity")
+    @Feature(value = "Negative test - changing user data with a non-existent post id")
     @Test
     public void negativePatchUserInfoWithInvalidUserIdTest(){
         String email = Email.generate();
@@ -121,6 +130,8 @@ public class PatchUserInfoTest {
         int statusCode = response.getStatusCode();
         Assert.assertEquals(statusCode, 401);
     }
+    @Epic(value = "Working with a User Entity")
+    @Feature(value = "Negative test - changing user data without authorization")
     @Test
     public void negativePatchUserInfoWithoutAuthorizationTest(){
         String email = Email.generate();
